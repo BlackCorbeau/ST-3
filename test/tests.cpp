@@ -1,20 +1,27 @@
 // Copyright 2021 GHA Test Team
+
 #include "TimedDoor.h"
+
 #include <chrono>
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 #include <thread>
 
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 class MockTimerClient : public TimerClient {
-public:
+ public:
   MOCK_METHOD(void, Timeout, (), (override));
 };
 
 class TimedDoorTest : public ::testing::Test {
-protected:
-  void SetUp() override { door = new TimedDoor(5); }
+ protected:
+  void SetUp() override {
+    door = new TimedDoor(5);
+  }
 
-  void TearDown() override { delete door; }
+  void TearDown() override {
+    delete door;
+  }
 
   TimedDoor *door;
 };
@@ -68,7 +75,7 @@ TEST(TimerTest, TimerCallsTimeoutAfterDelay) {
 TEST_F(TimedDoorTest, UnlockAlreadyOpenDoesNothing) {
   door->unlock();
   EXPECT_TRUE(door->isDoorOpened());
-  door->unlock(); // second unlock should not change state
+  door->unlock();
   EXPECT_TRUE(door->isDoorOpened());
 }
 
